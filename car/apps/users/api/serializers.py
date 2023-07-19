@@ -51,7 +51,12 @@ class UserCreateSerializer(serializers.Serializer):
     avatar = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
     username = serializers.CharField(write_only=True, required=True)
     password = serializers.CharField(write_only=True)
-
+    type_user = serializers.ChoiceField(
+        write_only=True,
+        required=True,
+        choices=User.UserType.choices,
+    )
+    email = serializers.CharField(write_only=True, required=False, allow_blank=True, default="")
     phone = serializers.CharField(write_only=True, allow_null=True, required=False)
     city = serializers.PrimaryKeyRelatedField(
         write_only=True,
@@ -68,6 +73,8 @@ class UserCreateSerializer(serializers.Serializer):
                 "username": validated_data.pop("username"),
                 "first_name": validated_data.pop("first_name"),
                 "last_name": validated_data.pop("last_name"),
+                "type_user": validated_data.pop("type_user"),
+                "email": validated_data.pop("email"),
                 "phone": validated_data.get("phone", None),
                 "city": validated_data.get("city", None),
                 "avatar": validated_data.pop("avatar", None),

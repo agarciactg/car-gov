@@ -13,11 +13,7 @@ from car.apps.users.files import user_avatar_image_path
 
 
 class UserManager(DjangoUserManager):
-    def create_user(self, username, type_user, first_name, last_name, email="", password=None):
-        if int(type_user) == User.EMPLOYEE:
-            if not username or not username.isdigit():
-                raise ValueError("Users must have an number document")
-
+    def create_user(self, username, type_user, first_name, last_name, email=None, password=None):
         return super().create_user(
             username,
             email,
@@ -105,10 +101,13 @@ class User(AbstractUser):
         blank=True,
         null=True,
     )
-
+    email = models.CharField(max_length=340, blank=True, null=True)
     phone = PhoneNumberField("Teléfono", blank=True, null=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["first_name", "last_name", "type_user"]
+    REQUIRED_FIELDS = ["first_name", "last_name"]
+
+    def __str__(self):
+        return self.get_full_name()

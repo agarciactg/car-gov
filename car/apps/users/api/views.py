@@ -1,6 +1,7 @@
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 from rest_framework import generics
+from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenViewBase
 
@@ -89,7 +90,6 @@ class UserCreateAPIView(mixins.APIWithCustomerPermissionsMixin, generics.ListAPI
             data=request.data,
         )
         serializer.is_valid(raise_exception=True)
-        print(serializer, "-----------------------")
         user = serializer.save()
         detail = serializers.UserDetailSerializer(user, many=False)
         return Response(detail.data)
