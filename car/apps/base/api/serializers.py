@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from car.apps.base.models import City, TypeDocument
+from car.apps.base.models import City, Government, Province, TypeDocument
 
 
 class TypeDocumentSerializer(serializers.ModelSerializer):
@@ -9,10 +9,25 @@ class TypeDocumentSerializer(serializers.ModelSerializer):
         fields = ("id", "initials", "name")
 
 
+class GovernmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Government
+        fields = ("id", "name", "environmental", "date_created")
+
+
+class ProvinceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Province
+        fields = ("id", "name", "date_created")
+
+
 class CitySerializer(serializers.ModelSerializer):
+    government = GovernmentSerializer(many=True)
+    province = ProvinceSerializer(many=False)
+
     class Meta:
         model = City
-        fields = ("id", "name", "date_created")
+        fields = ("id", "name", "province", "government", "date_created")
 
 
 class ExceptionSerializer(serializers.Serializer):

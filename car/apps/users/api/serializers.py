@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from car.apps.base import models as base_models
+from car.apps.base.api import serializers as base_serializers
 from car.apps.users.models import User
 
 
@@ -90,6 +91,7 @@ class UserCreateSerializer(serializers.Serializer):
 
 class UserDetailSerializer(serializers.ModelSerializer):
     type_user = serializers.CharField(source="get_type_user_display")
+    city = base_serializers.CitySerializer(many=False)
 
     class Meta:
         model = User
@@ -101,4 +103,5 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "username",
             "avatar",
             "is_active",
+            "city",
         )
