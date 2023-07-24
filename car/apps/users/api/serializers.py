@@ -15,6 +15,13 @@ class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["access"] = str(refresh.access_token)
         # data["type_user"] = self.user.get_type_user_display()
 
+        data.update({'user': {'username': self.user.username,
+                              'email': self.user.username,
+                              'first_name': self.user.first_name,
+                              'last_name': self.user.last_name,
+                              } 
+                    })
+
         return data
 
 
